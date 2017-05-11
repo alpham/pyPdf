@@ -35,17 +35,18 @@ __author__ = "Mathieu Fenniak"
 __author_email__ = "biziqe@mathieu.fenniak.net"
 
 #ENABLE_PSYCO = False
-#if ENABLE_PSYCO:
+# if ENABLE_PSYCO:
 #    try:
 #        import psyco
 #    except ImportError:
 #        ENABLE_PSYCO = False
 #
-#if not ENABLE_PSYCO:
+# if not ENABLE_PSYCO:
 #    class psyco:
 #        def proxy(func):
 #            return func
 #        proxy = staticmethod(proxy)
+
 
 def readUntilWhitespace(stream, maxchars=None):
     txt = ""
@@ -58,11 +59,13 @@ def readUntilWhitespace(stream, maxchars=None):
             break
     return txt
 
+
 def readNonWhitespace(stream):
     tok = ' '
     while tok == '\n' or tok == '\r' or tok == ' ' or tok == '\t':
         tok = stream.read(1)
     return tok
+
 
 class ConvertFunctionsToVirtualList(object):
     def __init__(self, lengthFunction, getFunction):
@@ -74,14 +77,15 @@ class ConvertFunctionsToVirtualList(object):
 
     def __getitem__(self, index):
         if not isinstance(index, int):
-            raise TypeError, "sequence indices must be integers"
+            raise TypeError("sequence indices must be integers")
         len_self = len(self)
         if index < 0:
             # support negative indexes
             index = len_self + index
         if index < 0 or index >= len_self:
-            raise IndexError, "sequence index out of range"
+            raise IndexError("sequence index out of range")
         return self.getFunction(index)
+
 
 def RC4_encrypt(key, plaintext):
     S = [i for i in range(256)]
@@ -99,24 +103,29 @@ def RC4_encrypt(key, plaintext):
         retval += chr(ord(plaintext[x]) ^ t)
     return retval
 
+
 def matrixMultiply(a, b):
-    return [[sum([float(i)*float(j)
+    return [[sum([float(i) * float(j)
                   for i, j in zip(row, col)]
-                ) for col in zip(*b)]
+                 ) for col in zip(*b)]
             for row in a]
+
 
 class PyPdfError(Exception):
     pass
 
+
 class PdfReadError(PyPdfError):
     pass
+
 
 class PageSizeNotDefinedError(PyPdfError):
     pass
 
+
 if __name__ == "__main__":
     # test RC4
     out = RC4_encrypt("Key", "Plaintext")
-    print repr(out)
+    print(repr(out))
     pt = RC4_encrypt("Key", out)
-    print repr(pt)
+    print(repr(pt))
